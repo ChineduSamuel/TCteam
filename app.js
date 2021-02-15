@@ -6,7 +6,7 @@ const dotenv = require("dotenv")
 const pino = require("pino")
 const flash = require('connect-flash');
 const session = require('express-session')
-
+const expressLayouts = require('express-ejs-layouts')
 
 const app = express();
 app.use(express.urlencoded({ extended: false}))
