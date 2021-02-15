@@ -11,6 +11,10 @@ const expressLayouts = require('express-ejs-layouts')
 const app = express();
 app.use(express.urlencoded({ extended: false}))
 
+//EJS
+app.use(expressLayouts);
+app.set('view engine', 'ejs');
+
 // Bodyparser
 app.use(express.urlencoded({ extended: false }));
 
