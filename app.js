@@ -1,19 +1,21 @@
-const bodyParser = require("body-parser");
+const bodyParser = require("body-parser")
 const { Mongoose } = require("mongoose");
-const express = require("express");
+const express = require('express');
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv")
 const pino = require("pino")
 const flash = require('connect-flash');
 const session = require('express-session')
-const expressLayouts = require('express-ejs-layouts')
+const expressLayouts = require('express-ejs-layouts') 
 
 const app = express();
+app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: false}))
 
-//EJS
-app.use(expressLayouts);
-app.set('view engine', 'ejs');
+// DB Config
+const db = require('./src/config/db').MongoURI;
+
+
 
 // Bodyparser
 app.use(express.urlencoded({ extended: false }));
@@ -26,19 +28,11 @@ app.use(session({
   
 }));
 
-// Connect flash
-app.use(flash());
 
-// Global Variables
-app.use((req, res, next) => {
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error_msg = req.flash('error_msg');
-    next();
-})
 
 // Routes
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use('/', require('./src/routes/index'));
+app.use('/users', require('./src/routes/users'));
 
 const PORT = process.env.PORT|| 3000;
 

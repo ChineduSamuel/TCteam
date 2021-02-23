@@ -18,30 +18,20 @@ router.post('/register', (req, res) =>{
     let errors = [];
 
     // Check required fields
-    if(!Firstname || !Lastname || !email || !password || !password2 || !role){
+    if(!Firstname || !Lastname || !email || !password || !role){
         errors.push({msg: 'Please fill in all fields'});
     }
 
-    // Check password match
-    if(password!==password2){
-        errors.push({msg: 'Passwords do not match'});
-    }
-    // Check password length
   
 
-    if (password === "undefined" || password.length < 8) {
+    if ((password &&  password.length)< 8) {
         error.password = "too short";
       }
 
     if(errors.length > 0) {
-       res.render('register',{
+      return  res.json({
            errors,
-           Firstname,
-           Lastname,
-           email,
-           password,
-           password2,
-           role
+           
 
        });
         
@@ -53,14 +43,9 @@ router.post('/register', (req, res) =>{
             if(user){
                 // User exists
                 errors.push({msg: 'Email is already registered'});
-                res.render('register',{
+             return   res.json({
                     errors,
-                    Firstname,
-                    Lastname,
-                    email,
-                    password,
-                    password2,
-                    role
+                   
                 });
             } else{
                 const newUser = new User({
@@ -80,8 +65,8 @@ router.post('/register', (req, res) =>{
                         // Save user
                         newUser.save()
                         .then(user => {
-                            req.flash('success_msg', 'You ahave successfully registered');
-                            res.redirect('/users/login');
+                           
+                           return res.json(user);
                         })
                         .catch(err => console.log(err));
                     })
